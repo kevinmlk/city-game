@@ -13,20 +13,22 @@ var circle = L.circle([51.508, -0.11], {
   radius: 500
 }).addTo(map);
 
-navigator.geolocation.watchPosition(succes, error);
+navigator.geolocation.watchPosition(success, error);
 
-const success = (position) => {
+function success(pos) {
   const lat = pos.coords.latitude;
   const lng = pos.coords.longitude;
   const accuracy = pos.coords.accuracy;
 
-  L.marker([lat, lng]).addTo(map);
-  L.circle([lat, lng], {radius: accuracy}).addTo(map);
+  let marker = L.marker([lat, lng]).addTo(map);
+  let circle = L.circle([lat, lng], {radius: accuracy}).addTo(map);
 
-  console.log(position);
+  map.fitBounds(circle.getBounds());
+
+  console.log(pos);
 };
 
-const error = (err) => {
+function error(err) {
  if (err.code === 1) {
    alert("Error: Access is denied!");
  } else {
