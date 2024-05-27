@@ -12,13 +12,44 @@ let zoomed;
 document.querySelector("#btn-request").addEventListener("click", getGeolocation);
 document.querySelector("#btn-watch").addEventListener("click", watchGeolocation);
 document.querySelector("#btn-stop").addEventListener("click", stopWatchGeolocation);
+visitedEl.addEventListener("click", () => {
+  
+});
 
 function showVisitedBtn(castle) {
   if (visitedEl.classList.contains("d-none")) {
     visitedEl.classList.remove("d-none");
     visitedEl.textContent = 'Mark ' + castle + ' as Visited';
+    visitedEl.addEventListener("click", function() {
+      // Change the fillColor of the corresponding castle
+      switch (castle) {
+        case "Rooigem":
+          castleRooigem.setStyle({color: 'green', fillColor: 'green'});
+          visitedEl.classList.add("d-none");
+          break;
+        case "Male":
+          castleMale.setStyle({color: 'green', fillColor: 'green'});
+          visitedEl.classList.add("d-none");
+          break;
+        case "Ryckevelde":
+          castleRyckevelde.setStyle({color: 'green', fillColor: 'green'});
+          visitedEl.classList.add("d-none");
+          break;
+        case "Minnewater":
+          castleMinnewater.setStyle({color: 'green', fillColor: 'green'});
+          visitedEl.classList.add("d-none");
+          break;
+        case "Kevergem":
+          castleKevergem.setStyle({color: 'green', fillColor: 'green'});
+          visitedEl.classList.add("d-none");
+          break;
+        default:
+          break;
+      }
+    });
   }
 }
+
 
 function hideVisitedBtn() {
   if (!visitedEl.classList.contains("d-none")) {
@@ -130,42 +161,55 @@ function showPosition(pos) {
 
 
 function nearCastle(currentPos) {
+  const userLat = currentPos.coords.latitude;
+  const userLng = currentPos.coords.longitude;
 
-  switch (currentPos.coords.latitude && currentPos.coords.longitude) {
-    case castleRooigem._latlng.lat && castleRooigem._latlng.lng:
-      showVisitedBtn('Rooigem');
-      console.log('Rooigem');
-      break;
-    case castleMale._latlng.lat && castleMale._latlng.lng:
-      showVisitedBtn('Male');
-      console.log('Male');
-      break;
-    case castleRyckevelde._latlng.lat && castleRyckevelde._latlng.lng:
-      showVisitedBtn('Ryckevelde');
-      console.log('Ryckevelde');
-      break;
-    case castleMinnewater._latlng.lat && castleMinnewater._latlng.lng:
-      showVisitedBtn('Minnewater');
-      console.log('Minnewater');
-      break;
-    case castleKevergem._latlng.lat && castleKevergem._latlng.lng:
-      showVisitedBtn('Kevergem');
-      console.log('Kevergem');
-      break;
-    default:
-      hideVisitedBtn();
-      console.log('Not near a castle...');
-      break;
+  // Calculate the distance between two points using Haversine formula
+  function calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Radius of the earth in km
+    const dLat = (lat2 - lat1) * Math.PI / 180; // deg2rad below
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+      Math.sin(dLon / 2) * Math.sin(dLon / 2)
+      ; 
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); 
+    const d = R * c; // Distance in km
+    return d;
   }
-  // if (currentPos.coords.latitude === castle._latlng.lat && currentPos.coords.longitude === castle._latlng.lng) {
-  //   console.log('Ur near a castle!');
-  // } else {
-  //   console.log('Not near a castle...');
-  // }
 
-  console.log(currentPos.coords);
-  // console.log(castle._latlng);
+  // Check the distance between the user's position and each castle
+  const distances = {
+    "castleRooigem": calculateDistance(userLat, userLng, castleRooigem._latlng.lat, castleRooigem._latlng.lng),
+    "castleMale": calculateDistance(userLat, userLng, castleMale._latlng.lat, castleMale._latlng.lng),
+    "castleRyckevelde": calculateDistance(userLat, userLng, castleRyckevelde._latlng.lat, castleRyckevelde._latlng.lng),
+    "castleMinnewater": calculateDistance(userLat, userLng, castleMinnewater._latlng.lat, castleMinnewater._latlng.lng),
+    "castleKevergem": calculateDistance(userLat, userLng, castleKevergem._latlng.lat, castleKevergem._latlng.lng)
+  };
+
+  // Define a smaller threshold for the user to be considered near a castle
+  const smallerThreshold = 0.1; // You can adjust this value as needed
+
+  // Check if the user is within the range of any castle
+  let nearCastleName = null;
+  for (const castle in distances) {
+    if (distances[castle] <= smallerThreshold) {
+      nearCastleName = castle;
+      break;
+    }
+  }
+
+  // Show or hide the visited button based on the result
+  if (nearCastleName) {
+    showVisitedBtn(nearCastleName.replace('castle', ''));
+    console.log(`You are near ${nearCastleName.replace('castle', '')}`);
+  } else {
+    hideVisitedBtn();
+    console.log('Not near a castle...');
+  }
 }
+
 
 function success(pos) {
   const lat = pos.coords.latitude;
