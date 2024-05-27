@@ -1,4 +1,4 @@
-var map = L.map('map').setView([51.505, -0.09], 13);
+var map = L.map('map').setView([50.850346, 4.351721], 13);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -12,6 +12,27 @@ var circle = L.circle([51.508, -0.11], {
   fillOpacity: 0.5,
   radius: 500
 }).addTo(map);
+
+navigator.geolocation.watchPosition(succes, error);
+
+const success = (position) => {
+  const lat = pos.coords.latitude;
+  const lng = pos.coords.longitude;
+  const accuracy = pos.coords.accuracy;
+
+  L.marker([lat, lng]).addTo(map);
+  L.circle([lat, lng], {radius: accuracy}).addTo(map);
+
+  console.log(position);
+};
+
+const error = (err) => {
+ if (err.code === 1) {
+   alert("Error: Access is denied!");
+ } else {
+   alert("Error: Cannot get location!");
+ }
+};
 
 var polygon = L.polygon([
   [51.509, -0.08],
