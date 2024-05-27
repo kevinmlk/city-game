@@ -4,37 +4,68 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-// var marker = L.marker([51.5, -0.09]).addTo(map);
+var castleRooigem = L.circle([51.217803, 3.264291], {
+  color: 'red',
+  fillColor: '#f03',
+  fillOpacity: 0.5,
+  radius: 250
+}).addTo(map);
 
-// var circle = L.circle([51.508, -0.11], {
-//   color: 'red',
-//   fillColor: '#f03',
-//   fillOpacity: 0.5,
-//   radius: 500
-// }).addTo(map);
+var castleMale = L.circle([51.209272, 3.288367], {
+  color: 'red',
+  fillColor: '#f52',
+  fillOpacity: 0.5,
+  radius: 250
+}).addTo(map);
 
-navigator.geolocation.watchPosition(success, error);
+var castleRyckevelde = L.circle([51.197332, 3.295418], {
+  color: 'red',
+  fillColor: '#f89',
+  fillOpacity: 0.5,
+  radius: 250
+}).addTo(map);
+
+var castleMinnewater = L.circle([51.199555, 3.22456], {
+  color: 'red',
+  fillColor: '#f56',
+  fillOpacity: 0.5,
+  radius: 250
+}).addTo(map);
+
+var castleKevergem = L.circle([51.177403, 3.23568], {
+  color: 'red',
+  fillColor: '#f11',
+  fillOpacity: 0.5,
+  radius: 250
+}).addTo(map);
+
+// navigator.geolocation.watchPosition(success, error);
 
 let marker;
 let circle;
+let zoomed;
 
-function success(pos) {
-  const lat = pos.coords.latitude;
-  const lng = pos.coords.longitude;
-  const accuracy = pos.coords.accuracy;
+// function success(pos) {
+//   const lat = pos.coords.latitude;
+//   const lng = pos.coords.longitude;
+//   const accuracy = pos.coords.accuracy;
 
-  if (marker) {
-    map.removeLayer(marker);
-    map.removeLayer(circle);
-  }
+//   if (marker) {
+//     map.removeLayer(marker);
+//     map.removeLayer(circle);
+//   }
 
-  marker = L.marker([lat, lng]).addTo(map);
-  circle = L.circle([lat, lng], {radius: accuracy}).addTo(map);
+//   marker = L.marker([lat, lng]).addTo(map);
+//   circle = L.circle([lat, lng], {radius: accuracy}).addTo(map);
 
-  map.fitBounds(circle.getBounds());
+//   if (!zoomed) {
+//     zoomed = map.fitBounds(circle.getBounds());
+//   }
 
-  console.log(pos);
-};
+//   map.setView([lat, lng]);
+
+//   console.log(pos);
+// };
 
 function error(err) {
  if (err.code === 1) {
