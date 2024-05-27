@@ -23,7 +23,23 @@
 <body>
   <main class="container">
     <section class="mt-5">
-      <h1 class="mb-3">Discover Belgian Castles!</h1>
+      <div class="d-flex align-items-center justify-content-between">
+        <h1 class="mb-3">Discover Belgian Castles!</h1>
+        <div class="buttons">
+          <a id="btn-request" class="btn btn-primary" href="#">request location</a>
+          <a id="btn-watch" class="btn btn-primary" href="#">follow location</a>
+          <a id="btn-stop" class="btn btn-primary" href="#">stop following</a>
+        </div>
+      </div>
+      <p id="feedback">&nbsp;</p>
+      <div class="d-flex align-items-center justify-content-between">
+        <p>Your current location:</p>
+        <ul class="d-flex gap-3">
+          <li>latitude: <span id="lat">unknown</span></li>
+          <li>longitude: <span id="long">unknown</span></li>
+          <li>accuracy: <span id="acc">unknown</span></li>
+        </ul>
+      </div>
       <div id="map"></div>
 
     </section>
