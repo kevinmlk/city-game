@@ -4,24 +4,32 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-var marker = L.marker([51.5, -0.09]).addTo(map);
+// var marker = L.marker([51.5, -0.09]).addTo(map);
 
-var circle = L.circle([51.508, -0.11], {
-  color: 'red',
-  fillColor: '#f03',
-  fillOpacity: 0.5,
-  radius: 500
-}).addTo(map);
+// var circle = L.circle([51.508, -0.11], {
+//   color: 'red',
+//   fillColor: '#f03',
+//   fillOpacity: 0.5,
+//   radius: 500
+// }).addTo(map);
 
 navigator.geolocation.watchPosition(success, error);
+
+let marker;
+let circle;
 
 function success(pos) {
   const lat = pos.coords.latitude;
   const lng = pos.coords.longitude;
   const accuracy = pos.coords.accuracy;
 
-  let marker = L.marker([lat, lng]).addTo(map);
-  let circle = L.circle([lat, lng], {radius: accuracy}).addTo(map);
+  if (marker) {
+    map.removeLayer(marker);
+    map.removeLayer(circle);
+  }
+
+  marker = L.marker([lat, lng]).addTo(map);
+  circle = L.circle([lat, lng], {radius: accuracy}).addTo(map);
 
   map.fitBounds(circle.getBounds());
 
@@ -42,8 +50,8 @@ var polygon = L.polygon([
   [51.51, -0.047]
 ]).addTo(map);
 
-marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
-circle.bindPopup("I am a circle.");
+// marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
+// circle.bindPopup("I am a circle.");
 polygon.bindPopup("I am a polygon.");
 var popup = L.popup();
 
