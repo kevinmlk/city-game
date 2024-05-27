@@ -74,7 +74,7 @@ var castleRooigem = L.circle([51.217803, 3.264291], {
 
 console.log(castleRooigem._latlng.lat);
 
-castleRooigem.bindPopup("Not yet visited");
+// castleRooigem.bindPopup("Not yet visited");
 
 var castleMale = L.circle([51.209272, 3.288367], {
   color: '#FDDA24',

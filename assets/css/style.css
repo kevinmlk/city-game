@@ -1,1 +1,79 @@
-#map { height: 80vh; }
+:root {
+  --xd-black: #0c0b0b;
+  --xd-white: rgb(250, 250, 250);
+  --xd-text-gray: rgba(var(--xd-white), .6);
+}
+
+body {
+  background-image: url('../images/grid.svg');
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--xd-white);
+}
+
+h2 {
+  margin-bottom: 0;
+}
+
+h1 {
+  font-size: 4em;
+  font-weight: bold;
+}
+
+p {
+  max-width: 600px;
+  line-height: 175%;
+}
+
+#map {
+  height: 80vh;
+  border-radius: 12px;
+  border: 1px solid var(--xd-white);
+}
+
+/* Bootstrap */
+.btn {
+  width: fit-content;
+  border-radius: 36px;
+  padding: .75rem 1.5rem;
+  font-weight: 500;
+  border-width: 2px;
+  letter-spacing: .5px;
+}
+
+.btn.btn-primary {
+  background-color: transparent;
+  border-color: var(--xd-white);
+}
+
+.btn.btn-primary:hover {
+  background-color: var(--xd-white);
+  color: var(--xd-black);
+}
+
+/* Responsive CSS */
+@media (max-width: 768px) {
+  body {
+    text-align: center;
+  }
+  h2 {
+    font-size: 1.8em;
+  }
+
+  #header {
+    flex-direction: column;
+  }
+
+  .buttons {
+    flex-direction: column;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  #map-container {
+    flex-direction: column;
+  }
+
+  #map-container ul {
+    padding: 0;
+  }
+}
