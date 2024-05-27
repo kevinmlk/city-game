@@ -2,6 +2,7 @@ const latitudeEl = document.querySelector("#lat");
 const longitudeEl = document.querySelector("#long");
 const accuracyEl = document.querySelector("#acc");
 const feedbackEl = document.querySelector("#feedback");
+const visitedEl = document.querySelector("#btn-visited");
 
 let locationWatch;
 let marker;
@@ -11,6 +12,66 @@ let zoomed;
 document.querySelector("#btn-request").addEventListener("click", getGeolocation);
 document.querySelector("#btn-watch").addEventListener("click", watchGeolocation);
 document.querySelector("#btn-stop").addEventListener("click", stopWatchGeolocation);
+
+function showVisitedBtn(castle) {
+  if (visitedEl.classList.contains("d-none")) {
+    visitedEl.classList.remove("d-none");
+    visitedEl.textContent = 'Mark ' + castle + ' as Visited';
+  }
+}
+
+function hideVisitedBtn() {
+  if (!visitedEl.classList.contains("d-none")) {
+    visitedEl.classList.add("d-none");
+  }
+}
+
+// Startpoint for the map
+var map = L.map('map').setView([50.850346, 4.351721], 13);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
+
+// Castles
+var castleRooigem = L.circle([51.217803, 3.264291], {
+  color: '#FDDA24',
+  fillColor: '#FDDA24 ',
+  fillOpacity: 0.7,
+  radius: 250
+}).addTo(map);
+
+console.log(castleRooigem._latlng.lat);
+
+castleRooigem.bindPopup("Not yet visited");
+
+var castleMale = L.circle([51.209272, 3.288367], {
+  color: '#FDDA24',
+  fillColor: '#FDDA24',
+  fillOpacity: 0.7,
+  radius: 250
+}).addTo(map);
+
+var castleRyckevelde = L.circle([51.197332, 3.295418], {
+  color: '#FDDA24',
+  fillColor: '#FDDA24',
+  fillOpacity: 0.7,
+  radius: 250
+}).addTo(map);
+
+var castleMinnewater = L.circle([51.199555, 3.22456], {
+  color: '#FDDA24',
+  fillColor: '#FDDA24',
+  fillOpacity: 0.7,
+  radius: 250
+}).addTo(map);
+
+var castleKevergem = L.circle([51.177403, 3.23568], {
+  color: '#FDDA24',
+  fillColor: '#FDDA24',
+  fillOpacity: 0.7,
+  radius: 250
+}).addTo(map);
 
 function getGeolocation() {
   if (navigator.geolocation) {
@@ -61,48 +122,50 @@ function showPosition(pos) {
   longitudeEl.innerText = pos.coords.longitude;//always returned
   accuracyEl.innerText = pos.coords.accuracy;
   console.log(pos);
+
+  // Check if the user is near a castle
+  nearCastle(pos);
 }
 
-var map = L.map('map').setView([50.850346, 4.351721], 13);
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
 
-var castleRooigem = L.circle([51.217803, 3.264291], {
-  color: 'red',
-  fillColor: '#f03',
-  fillOpacity: 0.5,
-  radius: 250
-}).addTo(map);
 
-var castleMale = L.circle([51.209272, 3.288367], {
-  color: 'red',
-  fillColor: '#f52',
-  fillOpacity: 0.5,
-  radius: 250
-}).addTo(map);
+function nearCastle(currentPos) {
 
-var castleRyckevelde = L.circle([51.197332, 3.295418], {
-  color: 'red',
-  fillColor: '#f89',
-  fillOpacity: 0.5,
-  radius: 250
-}).addTo(map);
+  switch (currentPos.coords.latitude && currentPos.coords.longitude) {
+    case castleRooigem._latlng.lat && castleRooigem._latlng.lng:
+      showVisitedBtn('Rooigem');
+      console.log('Rooigem');
+      break;
+    case castleMale._latlng.lat && castleMale._latlng.lng:
+      showVisitedBtn('Male');
+      console.log('Male');
+      break;
+    case castleRyckevelde._latlng.lat && castleRyckevelde._latlng.lng:
+      showVisitedBtn('Ryckevelde');
+      console.log('Ryckevelde');
+      break;
+    case castleMinnewater._latlng.lat && castleMinnewater._latlng.lng:
+      showVisitedBtn('Minnewater');
+      console.log('Minnewater');
+      break;
+    case castleKevergem._latlng.lat && castleKevergem._latlng.lng:
+      showVisitedBtn('Kevergem');
+      console.log('Kevergem');
+      break;
+    default:
+      hideVisitedBtn();
+      console.log('Not near a castle...');
+      break;
+  }
+  // if (currentPos.coords.latitude === castle._latlng.lat && currentPos.coords.longitude === castle._latlng.lng) {
+  //   console.log('Ur near a castle!');
+  // } else {
+  //   console.log('Not near a castle...');
+  // }
 
-var castleMinnewater = L.circle([51.199555, 3.22456], {
-  color: 'red',
-  fillColor: '#f56',
-  fillOpacity: 0.5,
-  radius: 250
-}).addTo(map);
-
-var castleKevergem = L.circle([51.177403, 3.23568], {
-  color: 'red',
-  fillColor: '#f11',
-  fillOpacity: 0.5,
-  radius: 250
-}).addTo(map);
+  console.log(currentPos.coords);
+  // console.log(castle._latlng);
+}
 
 function success(pos) {
   const lat = pos.coords.latitude;
@@ -127,6 +190,9 @@ function success(pos) {
   longitudeEl.innerText = pos.coords.longitude;//always returned
   accuracyEl.innerText = pos.coords.accuracy;
   console.log(pos);
+
+  // Check if the user is near a castle
+  nearCastle(pos);
 };
 
 function error(err) {
@@ -136,24 +202,3 @@ function error(err) {
    alert("Error: Cannot get location!");
  }
 };
-
-var polygon = L.polygon([
-  [51.509, -0.08],
-  [51.503, -0.06],
-  [51.51, -0.047]
-]).addTo(map);
-
-// marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
-// circle.bindPopup("I am a circle.");
-castleRooigem.bindPopup("I am a circle.");
-polygon.bindPopup("I am a polygon.");
-var popup = L.popup();
-
-function onMapClick(e) {
-    popup
-        .setLatLng(e.latlng)
-        .setContent("You clicked the map at " + e.latlng.toString())
-        .openOn(map);
-}
-
-map.on('click', onMapClick);
